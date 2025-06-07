@@ -1,7 +1,7 @@
 # client_py2.py
 import socket
 
-HOST = '10.42.0.1'  # IP-Adresse des Python 3 Servers anpassen
+HOST = '172.20.10.14'  # IP-Adresse des Python 3 Servers anpassen
 PORT = 8080
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

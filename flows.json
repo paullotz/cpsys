@@ -1,0 +1,237 @@
+[
+    {
+        "id": "9db6d2111e35a134",
+        "type": "tab",
+        "label": "Gallerie Flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e58a2c290824f901",
+        "type": "rpi-gpio in",
+        "z": "9db6d2111e35a134",
+        "name": "Preset 1",
+        "pin": "20",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "bcm": true,
+        "x": 120,
+        "y": 280,
+        "wires": [
+            [
+                "775bb83825d3ad60",
+                "2f4cdfa45d5034e0"
+            ]
+        ]
+    },
+    {
+        "id": "775bb83825d3ad60",
+        "type": "debug",
+        "z": "9db6d2111e35a134",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "471f68f767d6f23f",
+        "type": "rpi-gpio in",
+        "z": "9db6d2111e35a134",
+        "name": "Preset 2",
+        "pin": "21",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "bcm": true,
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "20cfa2e762acb749",
+                "2f4cdfa45d5034e0"
+            ]
+        ]
+    },
+    {
+        "id": "20cfa2e762acb749",
+        "type": "debug",
+        "z": "9db6d2111e35a134",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f854abd0846d7201",
+        "type": "rpi-gpio in",
+        "z": "9db6d2111e35a134",
+        "name": "Preset 3",
+        "pin": "22",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "bcm": true,
+        "x": 120,
+        "y": 440,
+        "wires": [
+            [
+                "f2d1a5f57fdf201a",
+                "2f4cdfa45d5034e0"
+            ]
+        ]
+    },
+    {
+        "id": "f2d1a5f57fdf201a",
+        "type": "debug",
+        "z": "9db6d2111e35a134",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "2f4cdfa45d5034e0",
+        "type": "function",
+        "z": "9db6d2111e35a134",
+        "name": "extract preset",
+        "func": "const pin = parseInt(msg.topic.split('/')[1]);\n\nif (msg.payload === 1 && pin >= 20 && pin <= 22) {\n    return {\n        payload: {\n            trigger: 1,               \n            button: pin,               \n            preset: pin === 20 ? \"preset1\" : \n                     pin === 21 ? \"preset2\" : \"preset3\" \n                     },\n        topic: `button/${pin}`,\n        _original: msg \n    };\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 360,
+        "wires": [
+            [
+                "94f26215c5cf1ff8",
+                "693a1c472f1ac688",
+                "0350c3f201a9e121"
+            ]
+        ]
+    },
+    {
+        "id": "dd7b736d49de03ed",
+        "type": "debug",
+        "z": "9db6d2111e35a134",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "94f26215c5cf1ff8",
+        "type": "ui_text",
+        "z": "9db6d2111e35a134",
+        "group": "4536d8534b0acadb",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ausgewählter Preset",
+        "format": "{{msg.payload.preset}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 840,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "693a1c472f1ac688",
+        "type": "ui_toast",
+        "z": "9db6d2111e35a134",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": true,
+        "className": "",
+        "topic": "",
+        "name": "Benachrichtigung",
+        "x": 830,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "0350c3f201a9e121",
+        "type": "http request",
+        "z": "9db6d2111e35a134",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "query",
+        "url": "http://172.20.10.14:8080/preset",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 830,
+        "y": 280,
+        "wires": [
+            [
+                "dd7b736d49de03ed"
+            ]
+        ]
+    },
+    {
+        "id": "4536d8534b0acadb",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "3413141d41cb3e90",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3413141d41cb3e90",
+        "type": "ui_tab",
+        "name": "Gallerie",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
