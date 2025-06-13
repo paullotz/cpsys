@@ -17,12 +17,13 @@ def oscsender(obj, topic, msg):
     try:
         if msg is None:
             obj.send(OSCMessage(topic))
-            print(f"OSC LOG: TOPIC({topic})")
+            print("OSC LOG: TOPIC" + topic)
         else:
             obj.send(OSCMessage(topic, msg))
-            print(f"OSC LOG: TOPIC({topic}) MSG({msg})")
+            print("OSC LOG: TOPIC " + topic + 
+                  " MSG " + msg)
     except Exception as e:
-        print(f"OSC ERROR - failed to send! {e}")
+        print("OSC ERROR - failed to send! " + e)
 
 @app.route('/preset', methods=['GET'])
 def send_preset():
@@ -30,7 +31,7 @@ def send_preset():
     if not q:
         return jsonify({"error": "Missing required query parameter 'q'"}), 400
 
-    topic = f"/mdc_layer1_{q}"
+    topic = "/mdc_layer1_" + q
     
     oscsender(mdcx_osc, topic, 1.0)
     
